@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="web-app">
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta http-equiv="pragma" content="no-cache" />
+	    <link rel="shortcut icon" href="" type="image/png">
+	    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	    
+	    <title>Isobar</title>
+	    <base href="/">
+   		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>	
+	</head>
+	<body>
+		
+		<style>
+			.changeColor{
+				margin-top:3%;
+				color:black;
+			}
+			
+			.changeColor:hover, .txt-blue:hover{
+				color:red;
+			}
+			
+			.txt-blue{
+				color:blue;
+			}
+			
+			.buttonTxt{
+				margin-left:auto;
+				margin-right:auto;
+				width:15%;
+			}
+		</style>
+		<script>
+			var app = angular.module('web-app', []);
+			app.controller('InfoController', function($scope) {			
+				
+				$scope.textClicked = document.querySelector("#text");
+				$scope.button= document.querySelector("#buttonChange");
+				
+				/// FUnction to change text color.....
+				$scope.button.addEventListener("click", function () {
+					if(document.getElementsByClassName('txt-blue').length==0){
+						$scope.textClicked.classList.add("txt-blue");
+					}
+					else{
+						$scope.textClicked.classList.remove("txt-blue");
+					}
+                });
+			});
+			
+		</script>
+		<div class="row col s12 m12 l12" ng-controller="InfoController">
+			<div class="row col s12 m12 l12">
+				<p align="center" style="margin-top:12%;">Click on the button to change the text color</p>
+				<h1 align="center" id="text" class="changeColor">Welcome to Isobar</h1>
+				<div class=" col s6 m3 l2 offset-s3 offset-m5 offset-l5">
+					<button class="btn btn-submit-form-redbg" id="buttonChange">Change color</button>
+				</div>
+			</div>		
+		</div>
+			
+	</body>
+</html>

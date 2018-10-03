@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="web-app">
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta http-equiv="pragma" content="no-cache" />
+	    <link rel="shortcut icon" href="" type="image/png">
+	    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	    
+	    <title>Isobar</title>
+	    <base href="/">
+   		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>	
+	</head>
+	<body>
+		
+		<style>
+			
+			.home{
+				font-size:36px;
+				color:blue;
+				margin-right:50px;
+				font-weight:1000;
+			}
+			
+			.container{
+				top:60px;
+				position:relative;
+				border:1px solid black;
+				margin:0px 0px 10px 10px;
+				background-color: #f3f1f1;
+			}
+			
+			input{
+				border: 1px solid black !important;
+				padding-left: 10px !important;
+			}
+			
+			.innerBox{
+				padding:30px 5px 20px 5px!important;
+				margin-bottom:0 !important;
+			}
+			
+			.innerBoxError{
+				margin-bottom:0 !important;
+			}
+			
+			.innerBoxError p{
+				color:red;
+			}
+			
+			p{
+				padding-left:50%;
+			}
+			
+			button{
+				margin-top:5px;
+				height:auto !important;
+			}
+			
+		</style>
+		<script>
+			var app = angular.module('web-app', []);
+			app.controller('InfoController', function($scope) {			
+				
+				$scope.integer1 = '';
+				$scope.integer2 = '';
+				$scope.firstError=true;
+				$scope.secondError=true;
+				console.log("ue");
+				
+				// Function to calculate two numbers...
+				$scope.addNum = function () {
+					if($scope.integer1!='' && $scope.integer1!=undefined){
+						$scope.firstError=true;
+						if($scope.integer2!='' && ($scope.integer2)!=undefined){
+							$scope.secondError=true;
+							$scope.sum = $scope.integer1 + $scope.integer2;
+						}
+						else{
+							$scope.secondError=false;
+						}
+					}
+					else{
+						$scope.firstError=false;
+					}
+                };
+			});
+			
+		</script>
+		
+		<header>	
+			<main>
+				<nav>
+					<div class="nav-wrapper z-depth-0 white" ng-controller="InfoController">
+						<ul class="left">      	 
+							<img src="" class="logo" >
+						</ul>
+						<ul class="hide-on-med-and-down right">
+							<li class="home">Isobar</li>
+						</ul>
+					</div>
+				</nav>
+			</main>	
+		</header>
+		<div class="row col s12 m12 l12" ng-controller="InfoController">
+			<div class="row col s10 m8 l10 offset-s1 offset-m2 offset-l1 z-depth-1 container">
+				<h4 align="center">Addition</h4>
+				<div class="row col s12 m12 l12 innerBox">
+					<div class="col s5 m5 l3">
+						<input id ="name" ng-model="integer1" type="number" placeholder="Enter first value" required>			    
+					</div>
+					<div class="col s1 m1 l1">
+						<p>+</p>
+					</div>
+					<div class="col s5 m5 l3">
+						<input id ="name" ng-model="integer2" type="number" placeholder="Enter second value" required>			    
+					</div>
+					<div class="col s6 m4 l2 offset-m2">
+					<button class="btn btn-submit-form-redbg" id="buttonChange" ng-click="addNum()">Submit / (=)</button>
+					</div>
+					<div class="col s4 m3 l3">
+						<input id ="name" ng-model="sum" placeholder="Total" readonly>			    
+					</div>
+					<div class="row col s12 m12 l12 innerBoxError">
+						<div class="col s4 m4 l3">
+							<p id="firstError" ng-hide="firstError">*This field is required</p>			    
+						</div>
+						<div class="col s4 m4 l1">
+							<p></p>
+						</div>
+						<div class="col s4 m4 l3 offset-m4 offset-l3">
+							<p id="secondError" ng-hide="secondError">*This field is required</p>		    
+						</div>
+					</div>
+				</div>
+			</div>		
+		</div>
+			
+	</body>
+</html>
