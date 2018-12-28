@@ -384,8 +384,8 @@
 					  ]
 					  ,
 				}
-				for (var i = 0; i < keyList.length; i++) {
-					resource.values.push(keyList[i]);
+				for (var i = 0; i < KeyListArray.length; i++) {
+					resource.values.push(KeyListArray);
 				}
 			      var request = gapi.client.sheets.spreadsheets.values.append(params, resource);
       				request.then(function(response) {
