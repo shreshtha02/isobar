@@ -378,9 +378,9 @@
 			      };
 				var resource = {
 				  "majorDimension": "ROWS",
-				  "values": [
+				  "values": 
 					    keyList
-					  ],
+					  ,
 				}
 			      var request = gapi.client.sheets.spreadsheets.values.append(params, resource);
       				request.then(function(response) {
