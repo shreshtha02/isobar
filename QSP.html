@@ -281,7 +281,7 @@
 		       * https://docs.google.com/spreadsheets/d/1ks-O7G5HCeTlpuWwdD7zO6ThNW77SxBfc8eNLRdcO9A/edit
 		       */
 				var keyList=[];
-				var productList=[];
+				var KeyListArray=[];
 				var overList=[];
 				var regionList=[];
 			
@@ -355,6 +355,7 @@
 					var cell = row.insertCell(-1);
 					cell.innerHTML = excelRows[i].Page_Path;
 					keyList.push(excelRows[i].Page_Path);
+					KeyListArray.push(keyList);
 				}
 		 
 				var dvExcel = document.getElementById("dvExcel");
@@ -379,7 +380,7 @@
 				var resource = {
 				  "majorDimension": "ROWS",
 				  "values":[
-					    keyList
+					    KeyListArray
 					  ]
 					  ,
 				}
