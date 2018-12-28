@@ -280,7 +280,7 @@
 		       * Print the names and majors of students in a sample spreadsheet:
 		       * https://docs.google.com/spreadsheets/d/1ks-O7G5HCeTlpuWwdD7zO6ThNW77SxBfc8eNLRdcO9A/edit
 		       */
-				var clientList=[];
+				var keyList=[];
 				var productList=[];
 				var overList=[];
 				var regionList=[];
@@ -354,6 +354,7 @@
 					//Add the data cells.
 					var cell = row.insertCell(-1);
 					cell.innerHTML = excelRows[i].Page_Path;
+					keyList.push(excelRows[i].Page_Path);
 				}
 		 
 				var dvExcel = document.getElementById("dvExcel");
@@ -378,8 +379,7 @@
 				var resource = {
 				  "majorDimension": "ROWS",
 				  "values": [
-					    ['A', 'B', 'C', 'D','E','F','G'],
-						['1','2','3','4','5']
+					    keyList
 					  ],
 				}
 			      var request = gapi.client.sheets.spreadsheets.values.append(params, resource);
