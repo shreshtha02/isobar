@@ -15,9 +15,9 @@
 	    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
 	    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	 <!--  	<link href="/css/materialize-style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-		<link rel="stylesheet" type="text/css" href="/css/sweet-alert/sweetalert.css"> -->
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>	
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
 	</head>
 	<body>
 		
@@ -137,34 +137,10 @@
 			var app = angular.module('web-app', []);
 			app.controller('InfoController', function($scope,$window,$location) {
 				
-				//clientID:622320244089-k2r7rkiaadpm5sufp415jcofa8m2ss20.apps.googleusercontent.com
-				//client secret:rosjtfDR5X5ZQV72PUajO6d3
-				//API key:AIzaSyA8m2aF8gfWqyw7D9_4oioznw4sTnyyiDE
 				
 				$scope.campaign={};
 				$scope.operator=[];
 				$scope.campaignName="";
-				
-				
-				
-
-				
-			/*	$scope.copy = function(){
-				   if($scope.campaignName!=""){
-					var copyText = document.getElementById("campaignName");
-					copyText.select();
-					document.execCommand("Copy");
-					//alert("Copied the text: " + copyText.value);
-					var $toastContent = $('<span>Kopierte teksten</span>');
-					Materialize.toast($toastContent, 5000, 'rounded');
-				   }
-				   else{
-					var $toastContent = $('<span>vennligst fyll ut alle detaljer</span>');
-					Materialize.toast($toastContent, 5000, 'rounded');
-					}
-				}*/
-				
-				//save.....
 		
 			});
 			
@@ -194,7 +170,9 @@
 						<p>Upload excel file</p>
 					</div>
 					<div class="col s12 m7 l9">
-					<input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />	    
+					<!--	<input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onchange="ExcelToJSON()"/>-->
+						<input type="file" id="fileUpload" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onchange="Upload()"/>
+						<div id="dvExcel"></div>
 					</div>
 				</div>	
 				<div class="row col s4 m2 l4 offset-s2 offset-l4 offset-m4" style="padding-top:7px;">
@@ -206,11 +184,11 @@
 			<!-- Modal Structure -->
 			  <div id="modal1" class="modal" style="z-index: 100;top:30%;overflow:hidden;">
 			    <div class="modal-content">
-			      <h5 align="center">Godkjenn deg selv ved å logge på Google-konto</h5>
+			      <h5 align="center">Authenticate yourself by logging into your Google account</h5>
 			    </div>
 			    <div class="modal-footer center">
 				<div class="row">
-			      		<button class="btn waves-effect center waves-light pink" id="authorize-button1" style="display: block; margin-left:  auto;  margin-right: auto; float:none;">Autorisere</button>
+			      		<button class="btn waves-effect center waves-light pink" id="authorize-button1" style="display: block; margin-left:  auto;  margin-right: auto; float:none;">Authorize</button>
 				<!--	<button class="btn waves-effect center waves-light pink" id="signout-button" style="display: none; margin-left:  auto;  margin-right: auto; float:none;">Signout</button>-->
 				</div>
 			    </div>
@@ -233,57 +211,58 @@
 		       *  On load, called to load the auth2 library and API client library.
 		       */
 		      function handleClientLoad() {
-			gapi.load('client:auth2', initClient);
+				gapi.load('client:auth2', initClient);
 		      }
 		      /**
 		       *  Initializes the API client library and sets up sign-in state
 		       *  listeners.
 		       */
 		      function initClient() {
-			gapi.client.init({
-			  apiKey: API_KEY,
-			  clientId: CLIENT_ID,
-			  discoveryDocs: DISCOVERY_DOCS,
-			  scope: SCOPES
-			}).then(function () {
-			  // Listen for sign-in state changes.
-			  gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-			  // Handle the initial sign-in state.
-			  updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-				    
-			  authorizeButton.onclick = handleAuthClick;
-			//  signoutButton.onclick = handleSignoutClick;
-			});
+				gapi.client.init({
+				  apiKey: API_KEY,
+				  clientId: CLIENT_ID,
+				  discoveryDocs: DISCOVERY_DOCS,
+				  scope: SCOPES
+				}).then(function () {
+				  // Listen for sign-in state changes.
+				  gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+				  // Handle the initial sign-in state.
+				  updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+						
+				  authorizeButton.onclick = handleAuthClick;
+				//  signoutButton.onclick = handleSignoutClick;
+				});
 		      }
 		      /**
 		       *  Called when the signed in status changes, to update the UI
 		       *  appropriately. After a sign-in, the API is called.
 		       */
 		      function updateSigninStatus(isSignedIn) {
-			if (isSignedIn) {
-				//signoutButton.style.display = 'block';
-			  authorizeButton.style.display = 'none';
-			  document.getElementById("modal1").style.display='none';
-			  document.getElementById("cover").style.display='none';
-			  
-			} else {
-			  authorizeButton.style.display = 'block';  
-			  document.getElementById("modal1").style.display='block';
-			  document.getElementById("cover").style.display='block';
-			 // signoutButton.style.display = 'none';
-			}
+				if (isSignedIn) {
+					//signoutButton.style.display = 'block';
+				  authorizeButton.style.display = 'none';
+				  document.getElementById("modal1").style.display='none';
+				  document.getElementById("cover").style.display='none';
+				  
+
+				} else {
+				  authorizeButton.style.display = 'block';  
+				  document.getElementById("modal1").style.display='block';
+				  document.getElementById("cover").style.display='block';
+				 // signoutButton.style.display = 'none';
+				}
 		      }
 		      /**
 		       *  Sign in the user upon button click.
 		       */
 		      function handleAuthClick(event) {
-			gapi.auth2.getAuthInstance().signIn();
+				gapi.auth2.getAuthInstance().signIn();
 		      }
 		      /**
 		       *  Sign out the user upon button click.
 		       */
 		      function handleSignoutClick(event) {
-			gapi.auth2.getAuthInstance().signOut();
+				gapi.auth2.getAuthInstance().signOut();
 		      }
 			
 			 /**
@@ -293,149 +272,98 @@
 		       * @param {string} message Text to be placed in pre element.
 		       */
 		      function appendPre(message) {
-			var pre = document.getElementById('content');
-			var textContent = document.createTextNode(message + '\n');
-			pre.appendChild(textContent);
+				var pre = document.getElementById('content');
+				var textContent = document.createTextNode(message + '\n');
+				pre.appendChild(textContent);
 		      }
 		      /**
 		       * Print the names and majors of students in a sample spreadsheet:
 		       * https://docs.google.com/spreadsheets/d/1ks-O7G5HCeTlpuWwdD7zO6ThNW77SxBfc8eNLRdcO9A/edit
 		       */
-			var clientList=[];
-			var productList=[];
-			var overList=[];
-			var regionList=[];
+				var clientList=[];
+				var productList=[];
+				var overList=[];
+				var regionList=[];
 			
-		      function listClients() {
-			gapi.client.sheets.spreadsheets.values.get({
-			  spreadsheetId: '1l7t1ksqQWdKjLFZRmoi8h9R5gj596I_zFH310UzeE2E',
-			//  tq:'select%20*%20limit%2010', //filter
-			  range: "Sheet2!A2:A600",
-			}).then(function(response) {
-			  var range = response.result;
-			  if (range.values.length > 0) {
-			   var options = '';
-			  for(var i = 0; i < range.values.length; i++){
-			    clientList.push(range.values[i][0]);
-			    options += '<option value="'+range.values[i]+'" />';
-			  }
-			  document.getElementById('client').innerHTML = options;
-			  } else {
-			    //appendPre('No data found.');
-			  }
-			}, function(response) {
-			  appendPre('Error: ' + response.result.error.message);
-			});
-		      }
 			
-			function listProducts() {
-			gapi.client.sheets.spreadsheets.values.get({
-			  //  spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-			  spreadsheetId: '1l7t1ksqQWdKjLFZRmoi8h9R5gj596I_zFH310UzeE2E',
-			  range: "Sheet2!B2:D600",
-			}).then(function(response) {
-			  var range = response.result;
-			  if (range.values.length > 0) {
-			   var optionsOver = '';
-		           var optionsProd= '';
-			   var optionsReg = '';
-			  for(var i = 0; i < range.values.length; i++){
-			    productList.push(range.values[i][2]);
-		            overList.push(range.values[i][1]);
-			    regionList.push(range.values[i][0]);
-		 	    optionsOver += '<option value="'+range.values[i][1]+'" />';
-			    optionsProd += '<option value="'+range.values[i][2]+'" />';
-			    optionsReg += '<option value="'+range.values[i][0]+'" />';
-			  }
-			  document.getElementById('over').innerHTML = optionsOver;
-			  document.getElementById('product').innerHTML = optionsProd;
-			  document.getElementById('region').innerHTML = optionsReg;
-			    
-			  } else {
-			    //appendPre('No data found.');
-			  }
-			}, function(response) {
-			  appendPre('Error: ' + response.result.error.message);
-			});
-		      }
-			
-			 function listClientsTINE() {
-			gapi.client.sheets.spreadsheets.values.get({
-			  //  spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-			  spreadsheetId: '1l7t1ksqQWdKjLFZRmoi8h9R5gj596I_zFH310UzeE2E',
-			  range: "Sheet2!E2:F600",
-			}).then(function(response) {
-			  var range = response.result;
-			  if (range.values.length > 0) {
-			   var optionsOver = '';
-		           var optionsProd= '';
-			  for(var i = 0; i < range.values.length; i++){
-		 	    optionsOver += '<option value="'+range.values[i][0]+'" />';
-			    optionsProd += '<option value="'+range.values[i][1]+'" />';
-			  }
-			  document.getElementById('over').innerHTML = optionsOver;
-			  document.getElementById('product').innerHTML = optionsProd;
-			    
-			  } else {
-			    //appendPre('No data found.');
-			  }
-			}, function(response) {
-			  appendPre('Error: ' + response.result.error.message);
-			});
-		      }
-			
-			 function listClientsSB() {
-			gapi.client.sheets.spreadsheets.values.get({
-			  //  spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-			  spreadsheetId: '1l7t1ksqQWdKjLFZRmoi8h9R5gj596I_zFH310UzeE2E',
-			  range: "Sheet2!G2:H600",
-			}).then(function(response) {
-			  var range = response.result;
-			  if (range.values.length > 0) {
-			   var optionsOver = '';
-		           var optionsProd= '';
-			  for(var i = 0; i < range.values.length; i++){
-		 	    optionsOver += '<option value="'+range.values[i][0]+'" />';
-			    optionsProd += '<option value="'+range.values[i][1]+'" />';
-			  }
-			  document.getElementById('over').innerHTML = optionsOver;
-			  document.getElementById('product').innerHTML = optionsProd;
-			    
-			  } else {
-			    //appendPre('No data found.');
-			  }
-			}, function(response) {
-			  appendPre('Error: ' + response.result.error.message);
-			});
-		      }
-			
-			function clientSelected(client){
-				console.log(client);
-				if(client.match(/\bTINE/gi)){
-					listClientsTINE();					
-				}
-				else if(client.match(/\bSpareBank 1/gi)){
-					listClientsSB();
-				}
-				else{
-					var optionsOver = '';
-		           		var optionsProd= '';
-					for(var i = 0; i < productLists.length; i++){
-						optionsProd += '<option value="'+productLists[i]+'" />';
+			function Upload() {
+			console.log('sdew');
+				//Reference the FileUpload element.
+				var fileUpload = document.getElementById("fileUpload");
+		 
+				//Validate whether File is valid Excel file.
+				var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xls|.xlsx)$/;
+				if (regex.test(fileUpload.value.toLowerCase())) {
+					if (typeof (FileReader) != "undefined") {
+						var reader = new FileReader();
+		 
+						//For Browsers other than IE.
+						if (reader.readAsBinaryString) {
+							reader.onload = function (e) {
+								ProcessExcel(e.target.result);
+							};
+							reader.readAsBinaryString(fileUpload.files[0]);
+						} else {
+							//For IE Browser.
+							reader.onload = function (e) {
+								var data = "";
+								var bytes = new Uint8Array(e.target.result);
+								for (var i = 0; i < bytes.byteLength; i++) {
+									data += String.fromCharCode(bytes[i]);
+								}
+								ProcessExcel(data);
+							};
+							reader.readAsArrayBuffer(fileUpload.files[0]);
+						}
+					} else {
+						alert("This browser does not support HTML5.");
 					}
-					for(var i = 0; i < overList.length; i++){
-						optionsOver += '<option value="'+overList[i]+'" />';
-					}
-					document.getElementById('over').innerHTML = optionsOver;
-			  		document.getElementById('product').innerHTML = optionsProd;
+				} else {
+					alert("Please upload a valid Excel file.");
 				}
-				
-			}
+			};
+			function ProcessExcel(data) {
+				//Read the Excel File data.
+				var workbook = XLSX.read(data, {
+					type: 'binary'
+				});
+		 
+				//Fetch the name of First Sheet.
+				var firstSheet = workbook.SheetNames[0];
+		 
+				//Read all rows from First Sheet into an JSON array.
+				var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
+		 
+				//Create a HTML Table element.
+				var table = document.createElement("table");
+				table.border = "1";
+		 
+				//Add the header row.
+				var row = table.insertRow(-1);
+		 
+				//Add the header cells.
+				var headerCell = document.createElement("TH");
+				headerCell.innerHTML = "Page URL";
+				row.appendChild(headerCell);
+		 
+				//Add the data rows from Excel file.
+				for (var i = 0; i < excelRows.length; i++) {
+					//Add the data row.
+					var row = table.insertRow(-1);
+		 
+					//Add the data cells.
+					var cell = row.insertCell(-1);
+					cell.innerHTML = excelRows[i].Page_Path;
+				}
+		 
+				var dvExcel = document.getElementById("dvExcel");
+				dvExcel.innerHTML = "";
+				dvExcel.appendChild(table);
+			};
+			
 			
 			function makeApiCall() {
-			      
-
-			      var params = {
+				var params = {
 				// The ID of the spreadsheet to update.
 				spreadsheetId: '1l7t1ksqQWdKjLFZRmoi8h9R5gj596I_zFH310UzeE2E', 
 				// The A1 notation of the values to update.
@@ -450,7 +378,8 @@
 				var resource = {
 				  "majorDimension": "ROWS",
 				  "values": [
-					    ['A', 'B', 'C', 'D','E','F','G']
+					    ['A', 'B', 'C', 'D','E','F','G'],
+						['1','2','3','4','5']
 					  ],
 				}
 			      var request = gapi.client.sheets.spreadsheets.values.append(params, resource);
@@ -458,14 +387,14 @@
 				// TODO: Change code below to process the `response` object:
 					//Copy..
 					
-				   var $toastContent = $('<span>informasjon lagret</span>');
+				   var $toastContent = $('<span>Information saved</span>');
 				   Materialize.toast($toastContent, 5000, 'rounded');
 				  document.location.reload(true)
 				console.log(response.result);
 			      }, function(reason) {
 				console.error('error: ' + reason.result.error.message);
 				if(reason.result.error.message=="The caller does not have permission"){
-				   var $toastContent = $('<span>Den som ringer har ikke tillatelse</span>');
+				   var $toastContent = $('<span>The caller does not have permission</span>');
 				   Materialize.toast($toastContent, 5000, 'rounded');
 				}
 			      });
