@@ -283,7 +283,8 @@
 				var urlList=[];
 				var keyPairList=[];
 				var keyValuePair=[];
-				var regionList=[];
+				var queryData=[];
+				var keyValuePairList = [];
 			
 			
 			function Upload() {
@@ -363,11 +364,19 @@
 				for (var i = 0; i < keyPairList.length; i++) {
 					while(keyPairList[i].length > 0) {
 						if(keyPairList[i].indexOf("&") > 0){
+							queryData=[];
 							keyValuePair.push(keyPairList[i].split('&')[0]);
+							queryData.push(keyValuePair[keyValuePair.length-1].split('=')[0]);
+							queryData.push(keyValuePair[keyValuePair.length-1].split('=')[1]);
+							keyValuePairList.push(queryData);
 							keyPairList[i] = keyPairList[i].slice((keyPairList[i].indexOf("&")+1), keyPairList[i].length);
 						}
 						else{
+							queryData=[];
 							keyValuePair.push(keyPairList[i]);
+							queryData.push(keyValuePair[keyValuePair.length-1].split('=')[0]);
+							queryData.push(keyValuePair[keyValuePair.length-1].split('=')[1]);
+							keyValuePairList.push(queryData);
 							keyPairList[i] = "";
 						}
 					}
@@ -399,8 +408,8 @@
 					  ]
 					  ,
 				}
-				for (var i = 0; i < keyValuePair.length; i++) {
-					resource.values.push(keyValuePair);
+				for (var i = 0; i < keyValuePairList.length; i++) {
+					resource.values.push(keyValuePairList[i]);
 				}
 			      var request = gapi.client.sheets.spreadsheets.values.append(params, resource);
       				request.then(function(response) {
