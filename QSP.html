@@ -399,8 +399,8 @@
 					  ]
 					  ,
 				}
-				for (var i = 0; i < urlList.length; i++) {
-					resource.values.push(urlList);
+				for (var i = 0; i < keyValuePair.length; i++) {
+					resource.values.push(keyValuePair);
 				}
 			      var request = gapi.client.sheets.spreadsheets.values.append(params, resource);
       				request.then(function(response) {
