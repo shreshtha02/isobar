@@ -280,9 +280,9 @@
 		       * Print the names and majors of students in a sample spreadsheet:
 		       * https://docs.google.com/spreadsheets/d/1ks-O7G5HCeTlpuWwdD7zO6ThNW77SxBfc8eNLRdcO9A/edit
 		       */
-				var keyList=[];
-				var KeyListArray=[];
-				var overList=[];
+				var urlList=[];
+				var keyPairList=[];
+				var keyValuePair=[];
 				var regionList=[];
 			
 			
@@ -354,8 +354,23 @@
 					//Add the data cells.
 					var cell = row.insertCell(-1);
 					cell.innerHTML = excelRows[i].Page_Path;
-					keyList.push(excelRows[i].Page_Path);
-					KeyListArray.push(keyList);
+					urlList.push(excelRows[i].Page_Path);
+					if (excelRows[i].Page_Path.split('?')[1] != undefined) {
+						keyPairList.push(excelRows[i].Page_Path.split('?')[1]);
+					}
+				}
+				
+				for (var i = 0; i < keyPairList.length; i++) {
+					while(keyPairList[i].length > 0) {
+						if(keyPairList[i].indexOf("&") > 0){
+							keyValuePair.push(keyPairList[i].split('&')[0]);
+							keyPairList[i] = keyPairList[i].slice((keyPairList[i].indexOf("&")+1), keyPairList[i].length);
+						}
+						else{
+							keyValuePair.push(keyPairList[i]);
+							keyPairList[i] = "";
+						}
+					}
 				}
 		 
 				var dvExcel = document.getElementById("dvExcel");
@@ -384,8 +399,8 @@
 					  ]
 					  ,
 				}
-				for (var i = 0; i < keyList.length; i++) {
-					resource.values.push(keyList);
+				for (var i = 0; i < urlList.length; i++) {
+					resource.values.push(urlList);
 				}
 			      var request = gapi.client.sheets.spreadsheets.values.append(params, resource);
       				request.then(function(response) {
