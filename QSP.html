@@ -330,7 +330,7 @@
 				});
 		 
 				//Fetch the name of First Sheet.
-				var firstSheet = workbook.SheetNames[0];
+				var firstSheet = workbook.SheetNames[1];
 		 
 				//Read all rows from First Sheet into an JSON array.
 				var excelRows = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[firstSheet]);
@@ -348,16 +348,16 @@
 				row.appendChild(headerCell);*/
 		 
 				//Add the data rows from Excel file.
-				for (var i = 0; i < excelRows.length; i++) {
+				for (var i = 0; i < excelRows.length-1; i++) {
 					//Add the data row.
 				//	var row = table.insertRow(-1);
 		 
 					//Add the data cells.
 				//	var cell = row.insertCell(-1);
 				//	cell.innerHTML = excelRows[i].Page_Path;
-					urlList.push(excelRows[i].Page_Path);
-					if (excelRows[i].Page_Path.split('?')[1] != undefined) {
-						keyPairList.push(excelRows[i].Page_Path.split('?')[1]);
+					urlList.push(excelRows[i].Page);
+					if (excelRows[i].Page.split('?')[1] != undefined) {
+						keyPairList.push(excelRows[i].Page.split('?')[1]);
 					}
 				}
 				
