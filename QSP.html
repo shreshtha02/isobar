@@ -368,6 +368,7 @@
 							keyValuePair.push(keyPairList[i].split('&')[0]);
 							queryData.push(keyValuePair[keyValuePair.length-1].split('=')[0]);
 							queryData.push(keyValuePair[keyValuePair.length-1].split('=')[1]);
+							queryData.push(1);
 							keyValuePairList.push(queryData);
 							keyPairList[i] = keyPairList[i].slice((keyPairList[i].indexOf("&")+1), keyPairList[i].length);
 						}
@@ -376,6 +377,7 @@
 							keyValuePair.push(keyPairList[i]);
 							queryData.push(keyValuePair[keyValuePair.length-1].split('=')[0]);
 							queryData.push(keyValuePair[keyValuePair.length-1].split('=')[1]);
+							queryData.push(1);
 							keyValuePairList.push(queryData);
 							keyPairList[i] = "";
 						}
