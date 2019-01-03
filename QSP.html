@@ -176,7 +176,7 @@
 					</div>
 				</div>	
 				<div class="row col s4 m2 l4 offset-s2 offset-l4 offset-m4" style="padding-top:7px;">
-						<button class="btn waves-effect center waves-light pink" type="submit" name="action" onclick="makeApiCall()" >Process Data & save
+						<button class="btn waves-effect center waves-light pink disabled" type="submit" name="action" onclick="makeApiCall()" >Process Data & save
         					<i class="material-icons right">send</i></button>
 				</div>
 			</div>
@@ -396,6 +396,7 @@
 					}
 				}
 				
+				jQuery('#process').removeClass("disabled");
 			/*	var dvExcel = document.getElementById("dvExcel");
 				dvExcel.innerHTML = "";
 				dvExcel.appendChild(table);*/
