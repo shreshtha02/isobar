@@ -381,7 +381,19 @@
 						}
 					}
 				}
-		 
+		 		
+				for (var i = 0; i < keyValuePairList.length; i++) {
+					var currentKey = keyValuePairList[i];
+					for(var j = i+1; j < keyValuePairList.length; j++){
+						if(keyValuePairList[j][0] == currentKey[0]){
+							if(keyValuePairList[j][1] == currentKey[1]){
+								keyValuePairList.splice(j, 1);
+								keyValuePairList[i][2] = keyValuePairList[i][2]+1;
+							}
+						}
+					}
+				}
+				
 			/*	var dvExcel = document.getElementById("dvExcel");
 				dvExcel.innerHTML = "";
 				dvExcel.appendChild(table);*/
