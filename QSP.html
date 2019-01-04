@@ -15,7 +15,6 @@
 	    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
 	    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>	
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/xlsx.full.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.5/jszip.js"></script>
 	</head>
@@ -137,22 +136,10 @@
 			}
 			
 		</style>
-		<script>
-			var app = angular.module('web-app', []);
-			app.controller('InfoController', function($scope,$window,$location) {
-				
-				
-				$scope.campaign={};
-				$scope.operator=[];
-				$scope.campaignName="";
-		
-			});
-			
-		</script>
 		<header>	
 			<main>
 				<nav>
-					<div class="nav-wrapper z-depth-0 white" ng-controller="InfoController">
+					<div class="nav-wrapper z-depth-0 white">
 						<ul class="left">      	 
 							<img src="https://3x5yp62s8loz3jw8273enqos16xh-wpengine.netdna-ssl.com/wp-content/themes/cp3/images/cardinal-path-logo.png" class="logo" >
 						</ul>
@@ -162,7 +149,7 @@
 				</nav>
 			</main>	
 		</header>
-		<div class="row col s12 m12 l12" ng-controller="InfoController">
+		<div class="row col s12 m12 l12">
 			<!--Add buttons to initiate auth sequence and sign out
 			 <button id="authorize-button" style="display: none;">Authorize</button>
 			 <button id="signout-button" style="display: none;">Sign Out</button>-->
@@ -173,7 +160,7 @@
 					<div class="col s12 m4 l3">
 						<p>Upload excel file</p>
 					</div>
-					<div class="col s12 m7 l9" id="inputFile">
+					<div class="col s12 m7 l8 offset-l1" id="inputFile">
 					<!--	<input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onchange="ExcelToJSON()"/>-->
 						<input type="file" id="fileUpload" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onchange="Upload()"/>
 						<div id="dvExcel"></div>
