@@ -99,6 +99,10 @@
                           display: none;
 			}
 			
+			#inputFile{
+				margin-top:15px;
+			}
+			
 			@keyframes scale-display {
 				0% {
 					opacity: 0;
@@ -174,7 +178,22 @@
 						<input type="file" id="fileUpload" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" onchange="Upload()"/>
 						<div id="dvExcel"></div>
 					</div>
-				</div>	
+				</div>
+				<div class="col l7 m7 s7 offset-s5 offset-m5 offset-l5">
+					<div class="preloader-wrapper small" id="loader">
+						<div class="spinner-layer spinner-green-only">
+							<div class="circle-clipper left">
+								<div class="circle"></div>
+							</div>
+							<div class="gap-patch">
+								<div class="circle"></div>
+							</div>
+							<div class="circle-clipper right">
+								<div class="circle"></div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="row col s4 m2 l4 offset-s2 offset-l4 offset-m4" style="padding-top:7px;">
 						<button class="btn waves-effect center waves-light pink disabled" type="submit" name="action" onclick="makeApiCall()" >Process Data & save
         					<i class="material-icons right">send</i></button>
@@ -288,7 +307,8 @@
 			
 			
 			function Upload() {
-			console.log('sdew');
+				console.log('uploading');
+				jQuery('#loader').addClass("active");
 				//Reference the FileUpload element.
 				var fileUpload = document.getElementById("fileUpload");
 		 
@@ -397,6 +417,7 @@
 				}
 				
 				jQuery('#process').removeClass("disabled");
+				jQuery('#loader').removeClass("active");
 			/*	var dvExcel = document.getElementById("dvExcel");
 				dvExcel.innerHTML = "";
 				dvExcel.appendChild(table);*/
