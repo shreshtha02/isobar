@@ -425,6 +425,7 @@
 			
 			
 			function makeApiCall() {
+				jQuery('#loader').addClass("active");
 				var params = {
 				// The ID of the spreadsheet to update.
 				spreadsheetId: '1l7t1ksqQWdKjLFZRmoi8h9R5gj596I_zFH310UzeE2E', 
@@ -451,7 +452,7 @@
       				request.then(function(response) {
 				// TODO: Change code below to process the `response` object:
 					//Copy..
-					
+					jQuery('#loader').removeClass("active");
 				   var $toastContent = $('<span>Information saved</span>');
 				   Materialize.toast($toastContent, 5000, 'rounded');
 				  document.location.reload(true)
