@@ -442,7 +442,8 @@
 					jQuery('#loader').removeClass("active");
 				   var $toastContent = $('<span>Information saved</span>');
 				   Materialize.toast($toastContent, 5000, 'rounded');
-				  document.location.reload(true)
+				  document.location.reload(true);
+					window.open('https://docs.google.com/spreadsheets/d/1l7t1ksqQWdKjLFZRmoi8h9R5gj596I_zFH310UzeE2E/edit?pli=1#gid=134186671', '_blank');
 				console.log(response.result);
 			      }, function(reason) {
 				console.error('error: ' + reason.result.error.message);
